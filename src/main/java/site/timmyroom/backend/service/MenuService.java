@@ -8,8 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 import site.timmyroom.backend.dto.CategoryDTO;
 import site.timmyroom.backend.dto.MenuDTO;
 import site.timmyroom.backend.dto.MenuNutritionalFactDTO;
+import site.timmyroom.backend.dto.ReviewDTO;
 import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
+import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
 import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.Menu;
 import site.timmyroom.backend.excpetion.MenuNotFound;
@@ -86,6 +88,33 @@ public class MenuService {
                     .vitaminD(menu.getMenuNutritionalFact().getVitaminD())
                     .magnesium(menu.getMenuNutritionalFact().getMagnesium())
                     .build()
+                ).build();
+
+        return response;
+    }
+
+    // 메뉴 아이디로 (해당 메뉴 아이디를 갖고 잇는 리뷰들의 요약본), 리뷰 내용, 리뷰 생성 날짜 반환하는 api
+    @Transactional
+    public MenuWithReviewsResponseDTO getMenuWithReviews(Long menuId) {
+        Menu menu = menuRepository.findMenuWithReviewsAndNutritionalFactsAndCategory(menuId).orElseThrow(() -> new MenuNotFound());
+        log.debug("메뉴랑 카테고리 같이 : {}", menu.toString());
+
+        MenuWithReviewsResponseDTO response = MenuWithReviewsResponseDTO.builder()
+                .menu(MenuDTO.builder()
+                        .id(menu.getId())
+                        .name(menu.getName())
+                        .contenet(menu.getContent())
+                        .recommendedServingSize(menu.getRecommendedServingSize())
+                        .caloriesPer100gServing(menu.getCaloriesPer100gServing())
+                        .build()
+                )
+                .reviews(
+                        menu.getReviews().stream().map(review -> ReviewDTO.builder()
+                                .id(review.getId())
+                                .content(review.getContent())
+                                .createdAt(review.getCreatedAt())
+                                .build()
+                        ).toList()
                 ).build();
 
         return response;

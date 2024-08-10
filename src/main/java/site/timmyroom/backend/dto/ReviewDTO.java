@@ -15,6 +15,6 @@ public class ReviewDTO {
     private Long id;
     private String content;
     private LocalDateTime createdAt;
-    private UserDTO user;
-    private MenuDTO menu;
+//    private UserDTO user;
+//    private MenuDTO menu;
 }
