@@ -1,10 +1,7 @@
 package site.timmyroom.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,19 +14,24 @@ public class Image {
     private String id;
     private String contentType;
     private Long size;
-    private String name;
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "menu_id")
     @JsonIgnore
     private Menu menu;
 
+    @OneToOne
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
+
     @Builder
-    public Image(String id, String contentType, Long size, String name, Menu menu) {
+    public Image(String id, String contentType, Long size, String url, Menu menu, Ingredient ingredient) {
         this.id = id;
         this.contentType = contentType;
         this.size = size;
-        this.name = name;
+        this.url = url;
         this.menu = menu;
+        this.ingredient = ingredient;
     }
 }

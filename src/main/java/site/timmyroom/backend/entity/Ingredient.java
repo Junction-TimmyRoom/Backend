@@ -28,4 +28,7 @@ public class Ingredient {
     @OneToMany(mappedBy = "ingredient")
     @JsonIgnore
     private List<IngredientCharacteristic> ingredientCharacteristics;
+
+    @OneToOne(mappedBy = "ingredient")
+    private Image image;
 }

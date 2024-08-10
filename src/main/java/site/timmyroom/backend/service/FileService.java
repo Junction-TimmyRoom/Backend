@@ -58,8 +58,7 @@ public class FileService {
                 .id(key)
                 .contentType(multipartFile.getContentType())
                 .size(multipartFile.getSize())
-                .name(multipartFile.getOriginalFilename())
-//                .menu()
+                .url(multipartFile.getOriginalFilename())
                 .build();
 
         return fileRepository.save(image);
@@ -67,7 +66,7 @@ public class FileService {
 
     public ResponseEntity<?> downloadFileBlob(String id){
         Image image = fileRepository.findById(id).orElseThrow(() -> new FileNotFoundException());
-        String downloadFileName = image.getName();
+        String downloadFileName = image.getUrl();
 
         try (S3Object s3Object = amazonS3Client.getObject(bucket, image.getId()); S3ObjectInputStream objectInputStream = s3Object.getObjectContent()){
             byte[] bytes = IOUtils.toByteArray(objectInputStream);
