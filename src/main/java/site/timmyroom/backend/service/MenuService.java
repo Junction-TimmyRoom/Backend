@@ -153,4 +153,8 @@ public class MenuService {
 
         return response;
     }
+
+    public Menu findById(Long menuId) {
+        return menuRepository.findById(menuId).orElseThrow(() -> new MenuNotFound());
+    }
 }
