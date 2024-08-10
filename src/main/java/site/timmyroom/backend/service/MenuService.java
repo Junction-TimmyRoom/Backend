@@ -37,16 +37,20 @@ public class MenuService {
         List<MenuWithIngredientCharacteristicTypeCountResponseDTO> response = new ArrayList<>();
         for (String menuName : filteredMenus) {
             List<Ingredient> ingredients = menuRepository.findMenuByNameWithIngredients(menuName);
-            Integer countOfAdvisory = 0;
-            Integer countOfProhibited = 0;
+            Integer countOfGood = 0;
+            Integer countOfCareful = 0;
+            Integer countOfEtc = 0;
 
             for (Ingredient ingredient : ingredients) {
                 for (IngredientCharacteristic ingredientCharacteristic : ingredient.getIngredientCharacteristics()) {
-                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.ADVISORY)) {
-                        countOfAdvisory++;
+                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.GOOD)) {
+                        countOfGood++;
                     }
-                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.PROHIBITED)) {
-                        countOfProhibited++;
+                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.CAREFUL)) {
+                        countOfCareful++;
+                    }
+                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.ETC)) {
+                        countOfEtc++;
                     }
                 }
             }
@@ -56,8 +60,9 @@ public class MenuService {
             response.add(
                     MenuWithIngredientCharacteristicTypeCountResponseDTO.builder()
                     .menu(menu.toDTO())
-                    .countOfAdvisor(countOfAdvisory)
-                    .countOfProhibited(countOfProhibited)
+                    .countOfGood(countOfGood)
+                    .countOfCareful(countOfCareful)
+                    .countOfEtc(countOfEtc)
                     .build()
             );
         }

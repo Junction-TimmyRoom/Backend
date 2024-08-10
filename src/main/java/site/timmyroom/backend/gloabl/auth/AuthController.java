@@ -29,33 +29,49 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
-    @Operation(summary = "로그인")
+//    @PostMapping("/login")
+//    @Operation(summary = "로그인")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "200", description = "로그인 성공", content = {@Content(schema = @Schema(implementation = TokenResponseDTO.class))}),
+//                    @ApiResponse(responseCode = "404", description = "사용자 없음", content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
+//            }
+//    )
+//    public ResponseEntity<TokenResponseDTO> login(@Valid @RequestBody LoginRequestDTO request){
+//        String accessToken = authService.login(request);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add("Authorization", "Bearer " + accessToken);
+//        return new ResponseEntity<>(new TokenResponseDTO(accessToken), httpHeaders, HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/signup")
+//    @Operation(summary = "회원가입")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "201", description = "회원가입 성공", content = {@Content(schema = @Schema(implementation = User.class))}),
+//                    @ApiResponse(responseCode = "409", description = "유저 아이디 중복", content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
+//            }
+//    )
+//    public ResponseEntity<User> signup(@Valid @RequestBody SignupRequestDTO request){
+//        User user = authService.signup(request);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+//    }
+
+    @PostMapping("/signupAndLogin")
+    @Operation(summary = "회원가입 겸 로그인")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "로그인 성공", content = {@Content(schema = @Schema(implementation = TokenResponseDTO.class))}),
-                    @ApiResponse(responseCode = "404", description = "사용자 없음", content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
+                    @ApiResponse(responseCode = "200", description = "회원가입 겸 로그인 성공", content = {@Content(schema = @Schema(implementation = User.class))}),
+                    @ApiResponse(responseCode = "409", description = "유저 아이디 중복", content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
             }
     )
-    public ResponseEntity<TokenResponseDTO> login(@Valid @RequestBody LoginRequestDTO request){
-        String accessToken = authService.login(request);
+    public ResponseEntity<TokenResponseDTO> signup(@Valid @RequestBody SignupRequestDTO request){
+        String accessToken = authService.signupAndLogin(request);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + accessToken);
         return new ResponseEntity<>(new TokenResponseDTO(accessToken), httpHeaders, HttpStatus.OK);
-    }
-
-    @PostMapping("/signup")
-    @Operation(summary = "회원가입")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "201", description = "회원가입 성공", content = {@Content(schema = @Schema(implementation = User.class))}),
-                    @ApiResponse(responseCode = "409", description = "유저 아이디 중복", content = {@Content(schema = @Schema(implementation = ErrorResponse.class))}),
-            }
-    )
-    public ResponseEntity<User> signup(@Valid @RequestBody SignupRequestDTO request){
-        User user = authService.signup(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }

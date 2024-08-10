@@ -9,6 +9,7 @@ import site.timmyroom.backend.dto.MenuDTO;
 public class MenuWithIngredientCharacteristicTypeCountResponseDTO {
 
     private MenuDTO menu;
-    private Integer countOfAdvisor = 0;
-    private Integer countOfProhibited = 0;
+    private Integer countOfGood = 0;
+    private Integer countOfCareful = 0;
+    private Integer countOfEtc = 0;
 }

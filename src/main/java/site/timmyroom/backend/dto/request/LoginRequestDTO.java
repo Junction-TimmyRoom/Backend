@@ -14,5 +14,5 @@ public class LoginRequestDTO {
 
     @Schema(description = "이메일", example = "hyunseung")
     @NotNull
-    private String email;
+    private String nickname;
 }
