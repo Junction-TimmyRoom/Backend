@@ -1,5 +1,6 @@
 package site.timmyroom.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class UserController {
 
     // 토큰으로 유저 닉네임, 임신 날짜 가져오는 api
     @GetMapping
+    @Operation(summary = " 유저 정보를 제공한다.")
     public ResponseEntity<UserDTO> getUser(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(userService.findUserById(userDetails.getUsername()));
     }
