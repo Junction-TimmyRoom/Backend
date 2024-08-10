@@ -25,8 +25,10 @@ public class MenuService {
 
     @Transactional
     public List<MenuWithIngredientCharacteristicTypeCountResponseDTO> check(MenuCheckListRequestDTO menuCheckListRequestDTO){
-        // DB에
-        List<String> menuNames = menuCheckListRequestDTO.getMenus();
+        List<String> menuNames = menuCheckListRequestDTO.getMenus().stream()
+                .map(String::toLowerCase)
+                .map(menu -> menu.replaceAll(" ", ""))
+                .toList();
 
         List<Menu> filteredMenus = new ArrayList<>();
         for (String menuName : menuNames) {

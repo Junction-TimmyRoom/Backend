@@ -35,8 +35,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     // 메뉴 키워드 검색
     @Query("SELECT m " +
             "FROM Menu m " +
-            "WHERE m.name LIKE %:keywork%")
-    Optional<Menu> searchMenuByKeywork(@Param("keywork") String keywork);
+            "WHERE LOWER(REPLACE(m.name, ' ', '')) LIKE %:keyword%")
+    Optional<Menu> searchMenuByKeywork(@Param("keyword") String keyword);
 
     // 메뉴명으로 원재료, 원재료특징 조회
     @Query("SELECT i FROM Menu m " +
