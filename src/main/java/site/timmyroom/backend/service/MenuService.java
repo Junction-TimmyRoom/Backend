@@ -5,11 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.timmyroom.backend.dto.*;
+import site.timmyroom.backend.dto.request.AskRequestDTO;
 import site.timmyroom.backend.dto.request.MenuCheckListRequestDTO;
-import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
-import site.timmyroom.backend.dto.response.MenuWithIngredientCharacteristicTypeCountResponseDTO;
-import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
-import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
+import site.timmyroom.backend.dto.response.*;
 import site.timmyroom.backend.entity.*;
 import site.timmyroom.backend.excpetion.MenuNotFound;
 import site.timmyroom.backend.repository.MenuRepository;
@@ -141,9 +139,18 @@ public class MenuService {
     @Transactional
     public MenuWithReviewsResponseDTO getMenuWithReviews(Long menuId) {
         List<Review> reviews = menuRepository.findReviewsAndUsersByMenuId(menuId);
+        List<Choice> choices = chatGPTService.prompt(new AskRequestDTO(
+                reviews.stream()
+                        .map(review -> review.getContent())
+                        .toList()
+        ));
 
         MenuWithReviewsResponseDTO response = MenuWithReviewsResponseDTO.builder()
-                .reviewSummary(null)
+                .reviewSummaries(
+                        choices.stream()
+                                .map(choice -> choice.getMessage().getContent())
+                                .toList()
+                )
                 .reviews(reviews.stream().map(review -> review.toDTO()).toList())
                 .build();
 

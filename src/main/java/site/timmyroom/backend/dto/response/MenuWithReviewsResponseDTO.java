@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 public class MenuWithReviewsResponseDTO {
 
-    private String reviewSummary;
+    private List<String> reviewSummaries;
     private List<ReviewDTO> reviews;
 }
