@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.joda.time.DateTime;
+import site.timmyroom.backend.dto.ReviewDTO;
 
 import java.time.LocalDateTime;
 
@@ -30,4 +31,13 @@ public class Review {
     @JoinColumn(name = "menu_id")
     @JsonIgnore
     private Menu menu;
+
+    public ReviewDTO toDTO(){
+        return ReviewDTO.builder()
+                .id(id)
+                .content(content)
+                .createdAt(createdAt)
+                .user(user.toDTO())
+                .build();
+    }
 }

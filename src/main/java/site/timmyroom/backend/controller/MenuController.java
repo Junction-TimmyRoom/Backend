@@ -37,11 +37,8 @@ public class MenuController {
     }
 
     // 메뉴 아이디로 (해당 메뉴 아이디를 갖고 잇는 리뷰들의 요약본), 리뷰 내용, 리뷰 생성 날짜 반환하는 api
-    @GetMapping("/reviews/{menuId}")
+    @GetMapping("/review/{menuId}")
     public ResponseEntity<MenuWithReviewsResponseDTO> getMenuWithReviews(@PathVariable("menuId") Long menuId){
         return ResponseEntity.ok(menuService.getMenuWithReviews(menuId));
     }
-
-    // 메뉴 아이디로 유저아이디, 리뷰아이디,리뷰 내용, 리뷰 생성날짜 반환하는 api
-
 }
