@@ -19,6 +19,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     // 메뉴아이디로 갖고있는 영양성분 전부 조회하는 api
     @Query("SELECT m FROM Menu m " +
             "LEFT JOIN FETCH m.menuNutritionalFact " +
+            "LEFT JOIN FETCH m.category " +
             "WHERE m.id = :menuId")
     Optional<Menu> findMenuWithMenuNutritionalFact(@Param("menuId") Long menuId);
 

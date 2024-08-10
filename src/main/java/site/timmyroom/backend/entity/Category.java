@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.CategoryDTO;
 
 import java.util.List;
 
@@ -23,4 +24,11 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Menu> menu;
+
+    public CategoryDTO toDTO() {
+        return CategoryDTO.builder()
+                .id(id)
+                .name(name)
+                .build();
+    }
 }

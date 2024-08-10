@@ -35,7 +35,7 @@ public class MenuController {
     }
 
     @GetMapping("/nutritionFact/{menuId}")
-    @Operation(summary = "메뉴 정보와 영양정보를 제공한다.")
+    @Operation(summary = "메뉴 정보와 카테고리, 영양정보를 제공한다.")
     public ResponseEntity<MenuWithNutrionalFactResponseDTO> getMenuWithNutritionFact(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("menuId") Long menuId){
         return ResponseEntity.ok(menuService.getMenuWithNutritionFact(userDetails.getUsername(), menuId));
     }

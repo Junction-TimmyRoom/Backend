@@ -100,6 +100,7 @@ public class MenuService {
         Menu menu = menuRepository.findMenuWithMenuNutritionalFact(menuId).orElseThrow(() -> new MenuNotFound());
 
         MenuWithNutrionalFactResponseDTO response = MenuWithNutrionalFactResponseDTO.builder()
+                .category(menu.getCategory().toDTO())
                 .menu(MenuDTO.builder()
                         .id(menu.getId())
                         .name(menu.getName())
