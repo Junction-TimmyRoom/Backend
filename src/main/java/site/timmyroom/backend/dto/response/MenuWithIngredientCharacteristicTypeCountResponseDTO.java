@@ -9,7 +9,11 @@ import site.timmyroom.backend.dto.MenuDTO;
 public class MenuWithIngredientCharacteristicTypeCountResponseDTO {
 
     private MenuDTO menu;
+
+    @Builder.Default
     private Integer countOfGood = 0;
+    @Builder.Default
     private Integer countOfCareful = 0;
+    @Builder.Default
     private Integer countOfEtc = 0;
 }
