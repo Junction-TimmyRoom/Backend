@@ -3,6 +3,7 @@ package site.timmyroom.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import site.timmyroom.backend.dto.UserDTO;
 
 import java.util.List;
 
@@ -28,5 +29,12 @@ public class User {
         this.name = name;
 
         return this;
+    }
+
+    public UserDTO toDTO(){
+        return UserDTO.builder()
+                .email(email)
+                .name(name)
+                .build();
     }
 }
