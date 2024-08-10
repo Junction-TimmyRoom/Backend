@@ -17,7 +17,9 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public List<Review> findReviewsByUserId(String userId){
-        return reviewRepository.findAllByUserEmail(userId);
+    // 유저아이디로 리뷰 아이디, 리뷰 내용, 리뷰 생성날짜 가져오는 api
+    public List<ReviewDTO> getReviews(String userId){
+        List<Review> reviews = reviewRepository.findAllByUserEmail(userId);
+        return reviews.stream().map(review -> review.toDTO()).toList();
     }
 }

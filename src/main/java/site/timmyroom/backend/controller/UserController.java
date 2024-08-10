@@ -23,12 +23,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final ReviewService reviewService;
 
-    // 유저아이디로 리뷰 아이디, 리뷰 내용, 리뷰 생성날짜 가져오는 api
-    @PostMapping("/review")
-    public ResponseEntity<List<ReviewDTO>> getReviews(@RequestParam String userId) {
-        return ResponseEntity.ok(userService.getReviews(userId));
-    }
+    // 토큰으로 유저 닉네임, 임신 날짜 가져오는 api
+//    @GetMapping("/me")
 
 }

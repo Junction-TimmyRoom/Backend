@@ -14,15 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final ReviewService reviewService;
 
     public User findUserByEmail(String email){
         return userRepository.findById(email).orElseThrow(() -> new UserNotFoundException());
     }
 
-    // 유저아이디로 리뷰 아이디, 리뷰 내용, 리뷰 생성날짜 가져오는 api
-    public List<ReviewDTO> getReviews(String userId){
-        List<Review> reviews = reviewService.findReviewsByUserId(userId);
-        return reviews.stream().map(review -> review.toDTO()).toList();
-    }
 }
