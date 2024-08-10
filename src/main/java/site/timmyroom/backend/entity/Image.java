@@ -16,7 +16,7 @@ public class Image {
     private Long size;
     private String url;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "menu_id")
     @JsonIgnore
     private Menu menu;

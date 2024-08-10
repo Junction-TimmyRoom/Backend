@@ -54,4 +54,5 @@ public class MenuController {
 
         return ResponseEntity.ok(new MenuIdSearchResponseDTO(menu.getId()));
     }
+
 }

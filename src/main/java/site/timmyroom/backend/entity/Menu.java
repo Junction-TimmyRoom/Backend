@@ -28,9 +28,7 @@ public class Menu {
     @JsonIgnore
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "menu")
-    @JsonIgnore
-    private List<Image> images;
+    private String imgUrl;
 
     @OneToMany(mappedBy = "menu")
     @JsonIgnore
@@ -49,9 +47,10 @@ public class Menu {
         return MenuDTO.builder()
                 .id(id)
                 .name(name)
-                .contenet(content)
+                .content(content)
                 .recommendedServingSize(recommendedServingSize)
                 .caloriesPer100gServing(caloriesPer100gServing)
+                .imgUrl(imgUrl)
                 .build();
     }
 }
