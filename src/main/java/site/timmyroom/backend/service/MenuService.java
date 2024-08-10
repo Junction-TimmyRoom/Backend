@@ -148,6 +148,10 @@ public class MenuService {
             messages.addAll(splitMessage(content));
         }
 
+        if(messages.size() > 2){
+            messages = messages.subList(0, 2);
+        }
+
         MenuWithReviewsResponseDTO response = MenuWithReviewsResponseDTO.builder()
                 .reviewSummaries(messages)
                 .reviews(reviews.stream().map(review -> review.toDTO()).toList())

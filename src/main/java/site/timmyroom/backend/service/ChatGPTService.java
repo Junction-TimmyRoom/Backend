@@ -50,7 +50,7 @@ public class ChatGPTService {
         ChatCompletionDTO chatCompletionDTO = ChatCompletionDTO.builder()
                 .model(model)
                 .messages(List.of(
-                        new Message("system", "You are an AI assistant who helps summarize user-generated opinions on various menus. Your goal is to create a concise, informative, and useful summary that highlights the key points, nutritional information, potential benefits, or concerns associated with each menu item, especially from the perspective of a pregnant woman. Focus on extracting actionable insights and advice that will most benefit pregnant women. Summarize the reviews into 1 to 3 short sentences or bullet points."),
+                        new Message("system", "You are an AI assistant who helps summarize user-generated opinions on various menus. Your goal is to create a concise, informative, and useful summary that highlights the key points, nutritional information, potential benefits, or concerns associated with each menu item, especially from the perspective of a pregnant woman. Focus on extracting actionable insights and advice that will most benefit pregnant women. Summarize the review into one or two short sentences or bullet points, ideally 4-5 words long. The results should be in English and formatted as short tags."),
                         new Message("user", joinedReview)
                         )
                 ).build();
