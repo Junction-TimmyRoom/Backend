@@ -14,6 +14,7 @@ import site.timmyroom.backend.repository.MenuRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +28,19 @@ public class MenuService {
     @Transactional
     public List<MenuWithIngredientCharacteristicTypeCountResponseDTO> check(MenuCheckListRequestDTO menuCheckListRequestDTO){
         // DB에
-        List<String> menus = menuCheckListRequestDTO.getMenus();
+        List<String> menuNames = menuCheckListRequestDTO.getMenus();
 
-        List<String> filteredMenus = menus.stream().filter(menu -> menuRepository.searchMenuByKeywork(menu)).toList();
-        // TO DO: 원재료 추후에 걸러내기
+        List<Menu> filteredMenus = new ArrayList<>();
+        for (String menuName : menuNames) {
+            Optional<Menu> menu = menuRepository.searchMenuByKeywork(menuName);
+            menu.ifPresent(m -> filteredMenus.add(m));
+        }
+
 
         // 메뉴명으로 메뉴 사진, 원재료 구분별로 개수
         List<MenuWithIngredientCharacteristicTypeCountResponseDTO> response = new ArrayList<>();
-        for (String menuName : filteredMenus) {
-            List<Ingredient> ingredients = menuRepository.findMenuByNameWithIngredients(menuName);
+        for (Menu menu : filteredMenus) {
+            List<Ingredient> ingredients = menuRepository.findMenuByIdWithIngredients(menu.getId());
             Integer countOfGood = 0;
             Integer countOfCareful = 0;
             Integer countOfEtc = 0;
@@ -53,8 +58,6 @@ public class MenuService {
                     }
                 }
             }
-
-            Menu menu = menuRepository.findByName(menuName).orElseThrow(() -> new MenuNotFound());
 
             response.add(
                     MenuWithIngredientCharacteristicTypeCountResponseDTO.builder()

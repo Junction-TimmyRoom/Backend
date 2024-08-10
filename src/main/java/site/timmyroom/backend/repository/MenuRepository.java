@@ -33,17 +33,17 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     Optional<Menu> findMenuWithCategory(Long menuId);
 
     // 메뉴 키워드 검색
-    @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END " +
+    @Query("SELECT m " +
             "FROM Menu m " +
             "WHERE m.name LIKE %:keywork%")
-    boolean searchMenuByKeywork(@Param("keywork") String keywork);
+    Optional<Menu> searchMenuByKeywork(@Param("keywork") String keywork);
 
     // 메뉴명으로 원재료, 원재료특징 조회
     @Query("SELECT i FROM Menu m " +
             "JOIN m.ingredients i " +
             "JOIN FETCH i.ingredientCharacteristics " +
-            "WHERE m.name = :menuName ")
-    List<Ingredient> findMenuByNameWithIngredients(@Param("menuName") String menuName);
+            "WHERE m.id = :menuId ")
+    List<Ingredient> findMenuByIdWithIngredients(@Param("menuId") Long menuId);
 
     Optional<Menu> findByName(String name);
 
