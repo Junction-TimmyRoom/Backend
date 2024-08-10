@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.Menu;
+import site.timmyroom.backend.entity.Review;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +14,8 @@ import java.util.Optional;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    @Query("SELECT r, u FROM Review r JOIN r.user u JOIN r.menu m WHERE m.id = :menuId")
-    List<Object[]> findReviewsAndUsersByMenuId(@Param("menuId") Long menuId);
+    @Query("SELECT r FROM Review r JOIN r.user u JOIN r.menu m WHERE m.id = :menuId")
+    List<Review> findReviewsAndUsersByMenuId(@Param("menuId") Long menuId);
 
     // 메뉴아이디로 갖고있는 영양성분 전부 조회하는 api
     @Query("SELECT m FROM Menu m " +

@@ -24,6 +24,7 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final IngredientService ingredientService;
     private final UserService userService;
+    private final ChatGPTService chatGPTService;
 
     @Transactional
     public List<MenuWithIngredientCharacteristicTypeCountResponseDTO> check(MenuCheckListRequestDTO menuCheckListRequestDTO){
@@ -139,27 +140,12 @@ public class MenuService {
     // 메뉴 아이디로 (해당 메뉴 아이디를 갖고 잇는 리뷰들의 요약본), 리뷰 내용, 리뷰 생성 날짜 반환하는 api
     @Transactional
     public MenuWithReviewsResponseDTO getMenuWithReviews(Long menuId) {
-        List<Object[]> results = menuRepository.findReviewsAndUsersByMenuId(menuId);
+        List<Review> reviews = menuRepository.findReviewsAndUsersByMenuId(menuId);
 
         MenuWithReviewsResponseDTO response = MenuWithReviewsResponseDTO.builder()
                 .reviewSummary(null)
-                .reviews(
-                        results.stream().map(result -> {
-                            Review review = (Review) result[0];
-                            User user = (User) result[1];
-
-                            return ReviewDTO.builder()
-                                    .id(review.getId())
-                                    .content(review.getContent())
-                                    .createdAt(review.getCreatedAt())
-                                    .user(UserDTO.builder()
-                                            .nickname(user.getNickname())
-                                            .pregnancyMonths(user.getPregnancyMonths())
-                                            .build()
-                                    )
-                                    .build();
-                        }).toList()
-                ).build();
+                .reviews(reviews.stream().map(review -> review.toDTO()).toList())
+                .build();
 
         return response;
     }
