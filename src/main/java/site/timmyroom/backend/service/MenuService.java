@@ -4,17 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import site.timmyroom.backend.dto.*;
+import site.timmyroom.backend.dto.request.MenuCheckListRequestDTO;
 import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
+import site.timmyroom.backend.dto.response.MenuWithIngredientCharacteristicTypeCountResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
-import site.timmyroom.backend.entity.Menu;
-import site.timmyroom.backend.entity.Review;
-import site.timmyroom.backend.entity.User;
+import site.timmyroom.backend.entity.*;
 import site.timmyroom.backend.excpetion.MenuNotFound;
 import site.timmyroom.backend.repository.MenuRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,11 +22,46 @@ import java.util.List;
 @Slf4j
 public class MenuService {
     private final MenuRepository menuRepository;
+    private final IngredientService ingredientService;
 
-    public void check(MultipartFile file){
-        // ChatGPT API 호출해서 메뉴명들 가져오기
-
+    @Transactional
+    public List<MenuWithIngredientCharacteristicTypeCountResponseDTO> check(MenuCheckListRequestDTO menuCheckListRequestDTO){
         // DB에
+        List<String> menus = menuCheckListRequestDTO.getMenus();
+
+        List<String> filteredMenus = menus.stream().filter(menu -> menuRepository.searchMenuByKeywork(menu)).toList();
+        // TO DO: 원재료 추후에 걸러내기
+
+        // 메뉴명으로 메뉴 사진, 원재료 구분별로 개수
+        List<MenuWithIngredientCharacteristicTypeCountResponseDTO> response = new ArrayList<>();
+        for (String menuName : filteredMenus) {
+            List<Ingredient> ingredients = menuRepository.findMenuByNameWithIngredients(menuName);
+            Integer countOfAdvisory = 0;
+            Integer countOfProhibited = 0;
+
+            for (Ingredient ingredient : ingredients) {
+                for (IngredientCharacteristic ingredientCharacteristic : ingredient.getIngredientCharacteristics()) {
+                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.ADVISORY)) {
+                        countOfAdvisory++;
+                    }
+                    if(ingredientCharacteristic.getType().equals(IngredientCharacteristicType.PROHIBITED)) {
+                        countOfProhibited++;
+                    }
+                }
+            }
+
+            Menu menu = menuRepository.findByName(menuName).orElseThrow(() -> new MenuNotFound());
+
+            response.add(
+                    MenuWithIngredientCharacteristicTypeCountResponseDTO.builder()
+                    .menu(menu.toDTO())
+                    .countOfAdvisor(countOfAdvisory)
+                    .countOfProhibited(countOfProhibited)
+                    .build()
+            );
+        }
+
+        return response;
     }
 
     @Transactional

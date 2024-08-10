@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.MenuDTO;
 
 import java.util.List;
 
@@ -43,4 +44,14 @@ public class Menu {
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     private Category category;
+
+    public MenuDTO toDTO(){
+        return MenuDTO.builder()
+                .id(id)
+                .name(name)
+                .contenet(content)
+                .recommendedServingSize(recommendedServingSize)
+                .caloriesPer100gServing(caloriesPer100gServing)
+                .build();
+    }
 }

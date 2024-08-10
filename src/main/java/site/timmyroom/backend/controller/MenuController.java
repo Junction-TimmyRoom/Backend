@@ -5,10 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import site.timmyroom.backend.dto.request.MenuCheckListRequestDTO;
 import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
+import site.timmyroom.backend.dto.response.MenuWithIngredientCharacteristicTypeCountResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
 import site.timmyroom.backend.service.MenuService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,11 +21,9 @@ import site.timmyroom.backend.service.MenuService;
 public class MenuController {
     private final MenuService menuService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<?> checkMenu(MultipartFile file){
-        menuService.check(file);
-
-        return null;
+    @PostMapping("/check")
+    public ResponseEntity<List<MenuWithIngredientCharacteristicTypeCountResponseDTO>> checkMenu(@RequestBody MenuCheckListRequestDTO menuCheckListRequestDTO){
+        return ResponseEntity.ok(menuService.check(menuCheckListRequestDTO));
     }
 
     @GetMapping("/category/{menuId}")
