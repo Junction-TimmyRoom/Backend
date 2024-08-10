@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import site.timmyroom.backend.dto.request.FileDownloadRequestDTO;
-import site.timmyroom.backend.entity.File;
+import site.timmyroom.backend.entity.Image;
 import site.timmyroom.backend.gloabl.error.ErrorResponse;
 import site.timmyroom.backend.service.FileService;
 
@@ -38,7 +38,7 @@ public class FileController {
                     @ApiResponse(
                             description = "업로드 성공",
                             responseCode = "201",
-                            content = {@Content(schema = @Schema(implementation = File.class))}
+                            content = {@Content(schema = @Schema(implementation = Image.class))}
                     ),
                     @ApiResponse(
                             description = "사용자 인증 실패",
@@ -52,13 +52,13 @@ public class FileController {
                     )
             }
     )
-    public ResponseEntity<File> uploadFile(
+    public ResponseEntity<Image> uploadFile(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("file") MultipartFile multipartFile
     ){
-        File file = fileService.uploadFile(multipartFile, userDetails.getUsername());
+        Image image = fileService.uploadFile(multipartFile, userDetails.getUsername());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(image);
     }
 
     @PostMapping("/download")
@@ -68,7 +68,7 @@ public class FileController {
                     @ApiResponse(
                             description = "다운로드 성공",
                             responseCode = "200",
-                            content = {@Content(schema = @Schema(implementation = File.class))}
+                            content = {@Content(schema = @Schema(implementation = Image.class))}
                     ),
                     @ApiResponse(
                             description = "사용자 인증 실패",
@@ -97,7 +97,7 @@ public class FileController {
                     @ApiResponse(
                             description = "조회 성공",
                             responseCode = "200",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = File.class)))}
+                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Image.class)))}
                     ),
                     @ApiResponse(
                             description = "사용자 인증 실패",
@@ -106,10 +106,10 @@ public class FileController {
                     )
             }
     )
-    public ResponseEntity<List<File>> findAllFileByEmail(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<List<Image>> findAllFileByEmail(@AuthenticationPrincipal UserDetails userDetails){
         String email = userDetails.getUsername();
-        List<File> files = fileService.findAllFileByEmail(email);
+//        List<Image> images = fileService.findAllFileByEmail(email);
 
-        return ResponseEntity.ok(files);
+        return ResponseEntity.ok(null);
     }
 }

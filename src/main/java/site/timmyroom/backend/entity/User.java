@@ -24,11 +24,6 @@ public class User {
     @JsonIgnore
     private String role;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_email")
-    @JsonIgnore
-    private List<File> files;
-
     public User update(String name){
         this.name = name;
 

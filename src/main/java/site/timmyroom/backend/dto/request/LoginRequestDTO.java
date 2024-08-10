@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(name = "로그인 DTO")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

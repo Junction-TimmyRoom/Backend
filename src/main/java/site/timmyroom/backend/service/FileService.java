@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import site.timmyroom.backend.entity.File;
+import site.timmyroom.backend.entity.Image;
 import site.timmyroom.backend.entity.User;
 import site.timmyroom.backend.excpetion.FileDownloadException;
 import site.timmyroom.backend.excpetion.FileNotFoundException;
@@ -38,7 +38,7 @@ public class FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public File uploadFile(MultipartFile multipartFile, String email) {
+    public Image uploadFile(MultipartFile multipartFile, String email) {
         String fileName = createFileName(multipartFile.getOriginalFilename());
         String key = email + "/" + fileName;
         User user = userService.findUserByEmail(email);
@@ -54,29 +54,29 @@ public class FileService {
             throw new FileUploadException();
         }
 
-        File file = File.builder()
+        Image image = Image.builder()
                 .id(key)
                 .contentType(multipartFile.getContentType())
                 .size(multipartFile.getSize())
                 .name(multipartFile.getOriginalFilename())
-                .user(user)
+//                .menu()
                 .build();
 
-        return fileRepository.save(file);
+        return fileRepository.save(image);
     }
 
     public ResponseEntity<?> downloadFileBlob(String id){
-        File file = fileRepository.findById(id).orElseThrow(() -> new FileNotFoundException());
-        String downloadFileName = file.getName();
+        Image image = fileRepository.findById(id).orElseThrow(() -> new FileNotFoundException());
+        String downloadFileName = image.getName();
 
-        try (S3Object s3Object = amazonS3Client.getObject(bucket, file.getId()); S3ObjectInputStream objectInputStream = s3Object.getObjectContent()){
+        try (S3Object s3Object = amazonS3Client.getObject(bucket, image.getId()); S3ObjectInputStream objectInputStream = s3Object.getObjectContent()){
             byte[] bytes = IOUtils.toByteArray(objectInputStream);
 
 //            String fileName = makeFileName(Objects.requireNonNullElse(downloadFileName, file.getId()));
             String fileName = downloadFileName;
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType(file.getContentType()));
+            headers.setContentType(MediaType.parseMediaType(image.getContentType()));
             headers.setContentLength(bytes.length);
             headers.setContentDispositionFormData("attachment", fileName);
 
@@ -93,7 +93,7 @@ public class FileService {
         return UUID.randomUUID().toString().concat(fileName);
     }
 
-    public List<File> findAllFileByEmail(String email) {
-        return fileRepository.findAllByUserEmail(email);
-    }
+//    public List<Image> findAllFileByEmail(String email) {
+//        return fileRepository.findAllByUserEmail(email);
+//    }
 }

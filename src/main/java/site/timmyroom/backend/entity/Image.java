@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class File {
+public class Image {
     @Id
     private String id;
     private String contentType;
@@ -20,16 +20,16 @@ public class File {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "user_email")
+    @JoinColumn(name = "menu_id")
     @JsonIgnore
-    private User user;
+    private Menu menu;
 
     @Builder
-    public File(String id, String contentType, Long size, String name, User user) {
+    public Image(String id, String contentType, Long size, String name, Menu menu) {
         this.id = id;
         this.contentType = contentType;
         this.size = size;
         this.name = name;
-        this.user = user;
+        this.menu = menu;
     }
 }

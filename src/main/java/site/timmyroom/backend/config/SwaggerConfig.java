@@ -24,7 +24,7 @@ import java.util.List;
 public class SwaggerConfig {
     private static final String BEARER_TOKEN_PREFIX = "Bearer";
     private static final String securityJwtName = "JWT";
-    private static final String[] serverUrls = new String[]{"https://timmyroom.site", "http://localhost:8080"};
+    private static final String[] serverUrls = new String[]{"http://localhost:8080", "https://timmyroom.site"};
 
     @Bean
     public OpenAPI openAPI(){
