@@ -12,9 +12,7 @@ import site.timmyroom.backend.entity.*;
 import site.timmyroom.backend.excpetion.MenuNotFound;
 import site.timmyroom.backend.repository.MenuRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -142,16 +140,27 @@ public class MenuService {
                         .toList()
         ));
 
+        List<String> messages = new ArrayList<>();
+        for (Choice choice : choices) {
+            String content = choice.getMessage().getContent();
+            messages.addAll(splitMessage(content));
+        }
+
         MenuWithReviewsResponseDTO response = MenuWithReviewsResponseDTO.builder()
-                .reviewSummaries(
-                        choices.stream()
-                                .map(choice -> choice.getMessage().getContent())
-                                .toList()
-                )
+                .reviewSummaries(messages)
                 .reviews(reviews.stream().map(review -> review.toDTO()).toList())
                 .build();
 
         return response;
+    }
+
+    private List<String> splitMessage(String message){
+        List<String> split = List.of(message.split("-"));
+        return split.stream()
+                .filter( str -> str != null && !str.trim().isEmpty())
+                .map(str -> str.trim())
+                .map(str -> str.replaceAll("^\\n", ""))
+                .toList();
     }
 
     public Menu findById(Long menuId) {
