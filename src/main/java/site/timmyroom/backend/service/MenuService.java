@@ -23,6 +23,7 @@ import java.util.List;
 public class MenuService {
     private final MenuRepository menuRepository;
     private final IngredientService ingredientService;
+    private final UserService userService;
 
     @Transactional
     public List<MenuWithIngredientCharacteristicTypeCountResponseDTO> check(MenuCheckListRequestDTO menuCheckListRequestDTO){
@@ -89,7 +90,8 @@ public class MenuService {
 
     // 메뉴아이디로 갖고있는 영양성분 전부 조회하는 api
     @Transactional
-    public MenuWithNutrionalFactResponseDTO getMenuWithNutritionFact(Long menuId) {
+    public MenuWithNutrionalFactResponseDTO getMenuWithNutritionFact(String nickname, Long menuId) {
+        PregnancyNutritionByMonth recommenedNutritionByMonth = userService.findRecommenedNutritionByMonth(nickname);
         Menu menu = menuRepository.findMenuWithMenuNutritionalFact(menuId).orElseThrow(() -> new MenuNotFound());
 
         MenuWithNutrionalFactResponseDTO response = MenuWithNutrionalFactResponseDTO.builder()
@@ -121,7 +123,9 @@ public class MenuService {
                     .vitaminD(menu.getMenuNutritionalFact().getVitaminD())
                     .magnesium(menu.getMenuNutritionalFact().getMagnesium())
                     .build()
-                ).build();
+                )
+                .recommendedNutritionFact(recommenedNutritionByMonth.toDTO())
+                .build();
 
         return response;
     }
