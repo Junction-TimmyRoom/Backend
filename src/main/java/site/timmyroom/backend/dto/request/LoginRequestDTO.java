@@ -12,12 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginRequestDTO {
 
-    @Schema(description = "이메일", example = "gustmd5715@gmail.com")
+    @Schema(description = "이메일", example = "hyunseung")
     @NotNull
-    @Email
     private String email;
-
-    @Schema(description = "비밀번호", example = "gggg")
-    @NotNull
-    private String password;
 }

@@ -26,7 +26,7 @@ public class AuthService {
 
     @Transactional
     public String login(LoginRequestDTO dto){
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), "1111");
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -36,13 +36,13 @@ public class AuthService {
 
     @Transactional
     public User signup(SignupRequestDTO request) {
-        if(userRepository.existsById(request.getEmail()))
+        if(userRepository.existsById(request.getNickname()))
             throw new UserAlreadyExistsException();
 
         User user = User.builder()
-                .password(passwordEncoder.encode(request.getPassword()))
-                .email(request.getEmail())
-                .name(request.getName())
+                .password(passwordEncoder.encode("1111"))
+                .nickname(request.getNickname())
+                .pregnancyMonths(request.getPregnancyMonths())
                 .role("ROLE_USER")
                 .build();
 

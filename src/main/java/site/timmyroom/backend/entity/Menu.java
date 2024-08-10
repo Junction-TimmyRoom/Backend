@@ -40,7 +40,7 @@ public class Menu {
     private MenuNutritionalFact menuNutritionalFact;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     private Category category;
 }

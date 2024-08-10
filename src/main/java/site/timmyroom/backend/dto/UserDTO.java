@@ -1,7 +1,5 @@
 package site.timmyroom.backend.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +7,6 @@ import lombok.Data;
 @Builder
 public class UserDTO {
 
-    private String email;
-    private String name;
+    private String nickname;
+    private Integer pregnancyMonths;
 }

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import site.timmyroom.backend.dto.UserDTO;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -16,25 +14,19 @@ import java.util.List;
 public class User {
 
     @Id
-    private String email;
+    private String nickname;
 
     @JsonIgnore
     private String password;
-    private String name;
+    private Integer pregnancyMonths;
 
     @JsonIgnore
     private String role;
 
-    public User update(String name){
-        this.name = name;
-
-        return this;
-    }
-
     public UserDTO toDTO(){
         return UserDTO.builder()
-                .email(email)
-                .name(name)
+                .nickname(nickname)
+                .pregnancyMonths(pregnancyMonths)
                 .build();
     }
 }

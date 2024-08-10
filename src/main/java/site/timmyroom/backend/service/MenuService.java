@@ -9,14 +9,12 @@ import site.timmyroom.backend.dto.*;
 import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
-import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.Menu;
 import site.timmyroom.backend.entity.Review;
 import site.timmyroom.backend.entity.User;
 import site.timmyroom.backend.excpetion.MenuNotFound;
 import site.timmyroom.backend.repository.MenuRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -110,8 +108,8 @@ public class MenuService {
                                     .content(review.getContent())
                                     .createdAt(review.getCreatedAt())
                                     .user(UserDTO.builder()
-                                            .email(user.getEmail())
-                                            .name(user.getName())
+                                            .nickname(user.getNickname())
+                                            .pregnancyMonths(user.getPregnancyMonths())
                                             .build()
                                     )
                                     .build();

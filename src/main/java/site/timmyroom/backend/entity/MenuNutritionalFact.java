@@ -55,7 +55,7 @@ public class MenuNutritionalFact {
     private Integer magnesium;
 
     @OneToOne
-    @JoinColumn(name = "menu_id")
+    @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     private Menu menu;
 }
