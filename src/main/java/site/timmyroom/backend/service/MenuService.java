@@ -159,4 +159,10 @@ public class MenuService {
         Menu menu = menuRepository.findByName(menuName).orElseThrow(() -> new MenuNotFound());
         return menu;
     }
+
+    public List<IngredientDTO> getIngredients(Long menuId) {
+        List<Ingredient> ingredients = menuRepository.findIngredientsAndCharacteristicsByMenuId(menuId);
+
+        return ingredients.stream().map(ingredient -> ingredient.toDTO()).toList();
+    }
 }

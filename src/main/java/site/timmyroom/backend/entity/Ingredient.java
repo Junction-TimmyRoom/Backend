@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.IngredientDTO;
+import site.timmyroom.backend.dto.MenuDTO;
 
 import java.util.List;
 
@@ -31,4 +33,13 @@ public class Ingredient {
 
     @OneToOne(mappedBy = "ingredient")
     private Image image;
+
+    public IngredientDTO toDTO(){
+        return IngredientDTO.builder()
+                .id(id)
+                .name(name)
+                .menu(menu.toDTO())
+                .ingredientCharacteristics(ingredientCharacteristics.stream().map(ingredientCharacteristic -> ingredientCharacteristic.toDTO()).toList())
+                .build();
+    }
 }

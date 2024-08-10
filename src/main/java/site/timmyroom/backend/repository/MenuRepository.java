@@ -47,4 +47,9 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     Optional<Menu> findByName(String name);
 
+    @Query("SELECT i FROM Ingredient i " +
+            "JOIN FETCH i.ingredientCharacteristics ic " +
+            "WHERE i.menu.id = :menuId")
+    List<Ingredient> findIngredientsAndCharacteristicsByMenuId(@Param("menuId") Long menuId);
+
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import site.timmyroom.backend.dto.IngredientDTO;
 import site.timmyroom.backend.dto.request.MenuCheckListRequestDTO;
 import site.timmyroom.backend.dto.response.*;
 import site.timmyroom.backend.entity.Menu;
@@ -55,4 +56,9 @@ public class MenuController {
         return ResponseEntity.ok(new MenuIdSearchResponseDTO(menu.getId()));
     }
 
+    @GetMapping("/ingredients/{menuId}")
+    @Operation(summary = "메뉴 아이디로 원재료 종류 + 원재료 특징들 반환하는 api")
+    public ResponseEntity<List<IngredientDTO>> getIngredients(@PathVariable("menuId") Long menuId){
+        return ResponseEntity.ok(menuService.getIngredients(menuId));
+    }
 }

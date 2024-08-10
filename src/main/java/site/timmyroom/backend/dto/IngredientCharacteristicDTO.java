@@ -13,5 +13,5 @@ public class IngredientCharacteristicDTO {
     private Long id;
     private IngredientCharacteristicType type;
     private String content;
-    private IngredientDTO ingredient;
+//    private IngredientDTO ingredient;
 }

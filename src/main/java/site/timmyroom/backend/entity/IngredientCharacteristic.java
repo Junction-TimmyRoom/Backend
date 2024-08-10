@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.IngredientCharacteristicDTO;
 
 @Entity
 @Getter
@@ -23,4 +24,12 @@ public class IngredientCharacteristic {
     @JoinColumn(name = "ingredient_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     private Ingredient ingredient;
+
+    public IngredientCharacteristicDTO toDTO(){
+        return IngredientCharacteristicDTO.builder()
+                .id(id)
+                .type(type)
+                .content(content)
+                .build();
+    }
 }
