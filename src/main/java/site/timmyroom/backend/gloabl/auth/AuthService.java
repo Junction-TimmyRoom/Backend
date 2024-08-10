@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.timmyroom.backend.dto.request.LoginRequestDTO;
 import site.timmyroom.backend.dto.request.SignupRequestDTO;
-import site.timmyroom.backend.dto.response.TokenResponseDTO;
 import site.timmyroom.backend.entity.User;
 import site.timmyroom.backend.excpetion.UserAlreadyExistsException;
 import site.timmyroom.backend.repository.UserRepository;
@@ -43,7 +42,7 @@ public class AuthService {
         User user = User.builder()
                 .password(passwordEncoder.encode("1111"))
                 .nickname(request.getNickname())
-                .pregnancyMonths(request.getPregnancyMonths())
+                .pregnancyMonths(request.getPregnancyWeeks())
                 .role("ROLE_USER")
                 .build();
 
@@ -55,7 +54,7 @@ public class AuthService {
         User user = User.builder()
                 .password(passwordEncoder.encode("1111"))
                 .nickname(request.getNickname())
-                .pregnancyMonths(request.getPregnancyMonths())
+                .pregnancyMonths(weeksToMonths(request.getPregnancyWeeks()))
                 .role("ROLE_USER")
                 .build();
 
@@ -68,5 +67,9 @@ public class AuthService {
         String accessToken = jwtUtil.createAccessToken(authentication);
 
         return accessToken;
+    }
+
+    private Integer weeksToMonths(Integer weeks) {
+        return weeks/4;
     }
 }

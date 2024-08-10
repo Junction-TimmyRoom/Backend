@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class SignupRequestDTO {
     private String nickname;
-    private Integer pregnancyMonths;
+    private Integer pregnancyWeeks;
 }

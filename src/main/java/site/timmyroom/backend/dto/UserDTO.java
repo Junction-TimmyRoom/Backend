@@ -8,5 +8,5 @@ import lombok.Data;
 public class UserDTO {
 
     private String nickname;
-    private Integer pregnancyMonths;
+    private Integer pregnancyWeeks;
 }

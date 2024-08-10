@@ -26,7 +26,7 @@ public class User {
     public UserDTO toDTO(){
         return UserDTO.builder()
                 .nickname(nickname)
-                .pregnancyMonths(pregnancyMonths)
+                .pregnancyWeeks(pregnancyMonths * 4)
                 .build();
     }
 }
