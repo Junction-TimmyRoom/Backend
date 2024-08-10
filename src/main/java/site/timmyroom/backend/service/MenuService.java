@@ -161,4 +161,9 @@ public class MenuService {
     public Menu findById(Long menuId) {
         return menuRepository.findById(menuId).orElseThrow(() -> new MenuNotFound());
     }
+
+    public Menu getMenuIdByName(String menuName) {
+        Menu menu = menuRepository.findByName(menuName).orElseThrow(() -> new MenuNotFound());
+        return menu;
+    }
 }

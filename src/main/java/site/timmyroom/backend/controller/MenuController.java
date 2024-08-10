@@ -9,10 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import site.timmyroom.backend.dto.request.MenuCheckListRequestDTO;
-import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
-import site.timmyroom.backend.dto.response.MenuWithIngredientCharacteristicTypeCountResponseDTO;
-import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
-import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
+import site.timmyroom.backend.dto.response.*;
+import site.timmyroom.backend.entity.Menu;
 import site.timmyroom.backend.service.MenuService;
 
 import java.util.List;
@@ -47,5 +45,13 @@ public class MenuController {
     @Operation(summary = "메뉴 정보와 리뷰 리스트를 제공한다.")
     public ResponseEntity<MenuWithReviewsResponseDTO> getMenuWithReviews(@PathVariable("menuId") Long menuId){
         return ResponseEntity.ok(menuService.getMenuWithReviews(menuId));
+    }
+
+    @GetMapping("/{menuName}")
+    @Operation(summary = "메뉴명으로 메뉴 id를 조회한다.")
+    public ResponseEntity<MenuIdSearchResponseDTO> searchMenuId(@PathVariable("menuName") String menuName){
+        Menu menu = menuService.getMenuIdByName(menuName);
+
+        return ResponseEntity.ok(new MenuIdSearchResponseDTO(menu.getId()));
     }
 }
