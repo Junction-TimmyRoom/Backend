@@ -32,6 +32,7 @@ public class MenuController {
 
     @GetMapping("/nutritionFact/{menuId}")
     public ResponseEntity<MenuWithNutrionalFactResponseDTO> getMenuWithNutritionFact(@PathVariable("menuId") Long menuId){
-        return null;
+        MenuWithNutrionalFactResponseDTO menuWithNutrionalFactResponseDTO = menuService.getMenuWithNutritionFact(menuId);
+        return ResponseEntity.ok(menuWithNutrionalFactResponseDTO);
     }
 }

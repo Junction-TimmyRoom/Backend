@@ -10,5 +10,5 @@ import site.timmyroom.backend.dto.MenuNutritionalFactDTO;
 public class MenuWithNutrionalFactResponseDTO {
 
     private MenuDTO menu;
-    private MenuNutritionalFactDTO nutritionalFactDTO;
+    private MenuNutritionalFactDTO nutritionalFact;
 }

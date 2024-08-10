@@ -8,6 +8,7 @@ import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.Menu;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
@@ -17,7 +18,13 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "LEFT JOIN m.menuNutritionalFact " +
             "LEFT JOIN m.category " +
             "WHERE m.id = :menuId")
-    Menu findMenuWithReviewsAndNutritionalFactsAndCategory(@Param("menuId") Long menuId);
+    Optional<Menu> findMenuWithReviewsAndNutritionalFactsAndCategory(@Param("menuId") Long menuId);
+
+    // 메뉴아이디로 갖고있는 영양성분 전부 조회하는 api
+    @Query("SELECT m FROM Menu m " +
+            "LEFT JOIN m.menuNutritionalFact " +
+            "WHERE m.id = :menuId")
+    Optional<Menu> findMenuWithMenuNutritionalFact(@Param("menuId") Long menuId);
 
     @Query("SELECT i FROM Ingredient i " +
             "LEFT JOIN FETCH i.ingredientCharacteristics " +

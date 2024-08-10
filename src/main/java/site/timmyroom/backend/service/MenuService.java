@@ -5,10 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import site.timmyroom.backend.dto.CategoryDTO;
 import site.timmyroom.backend.dto.MenuDTO;
+import site.timmyroom.backend.dto.MenuNutritionalFactDTO;
 import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
+import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
 import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.Menu;
+import site.timmyroom.backend.excpetion.MenuNotFound;
 import site.timmyroom.backend.repository.MenuRepository;
 
 import java.util.List;
@@ -27,12 +31,63 @@ public class MenuService {
 
     @Transactional
     public MenuWithCategoryResponseDTO getMenuInfo(Long menuId) {
-        Menu menuWithReviewsAndNutritionalFacts = menuRepository.findMenuWithReviewsAndNutritionalFactsAndCategory(menuId);
+        Menu menuWithReviewsAndNutritionalFacts = menuRepository.findMenuWithReviewsAndNutritionalFactsAndCategory(menuId).orElseThrow(() -> new MenuNotFound());
         log.debug("메뉴랑 카테고리 같이 : {}", menuWithReviewsAndNutritionalFacts.toString());
 
-//        MenuWithCategoryResponseDTO.builder()
-//                .menu(MenuDTO.)
-        return null;
+        MenuWithCategoryResponseDTO menuWithCategoryResponseDTO = MenuWithCategoryResponseDTO.builder()
+                .menu(MenuDTO.builder()
+                        .id(menuWithReviewsAndNutritionalFacts.getId())
+                        .name(menuWithReviewsAndNutritionalFacts.getName())
+                        .contenet(menuWithReviewsAndNutritionalFacts.getContent())
+                        .recommendedServingSize(menuWithReviewsAndNutritionalFacts.getRecommendedServingSize())
+                        .caloriesPer100gServing(menuWithReviewsAndNutritionalFacts.getCaloriesPer100gServing())
+                        .build()
+                )
+                .category(CategoryDTO.builder()
+                        .id(menuWithReviewsAndNutritionalFacts.getCategory().getId())
+                        .name(menuWithReviewsAndNutritionalFacts.getCategory().getName())
+                        .build()
+                ).build();
 
+        return menuWithCategoryResponseDTO;
+    }
+
+    // 메뉴아이디로 갖고있는 영양성분 전부 조회하는 api
+    @Transactional
+    public MenuWithNutrionalFactResponseDTO getMenuWithNutritionFact(Long menuId) {
+        Menu menu = menuRepository.findMenuWithMenuNutritionalFact(menuId).orElseThrow(() -> new MenuNotFound());
+
+        MenuWithNutrionalFactResponseDTO response = MenuWithNutrionalFactResponseDTO.builder()
+                .menu(MenuDTO.builder()
+                        .id(menu.getId())
+                        .name(menu.getName())
+                        .contenet(menu.getContent())
+                        .recommendedServingSize(menu.getRecommendedServingSize())
+                        .caloriesPer100gServing(menu.getCaloriesPer100gServing())
+                        .build()
+                )
+                .nutritionalFact(MenuNutritionalFactDTO.builder()
+                    .id(menu.getMenuNutritionalFact().getId())
+                    .carbohydrates(menu.getMenuNutritionalFact().getCarbohydrates())
+                    .sugars(menu.getMenuNutritionalFact().getSugars())
+                    .protein(menu.getMenuNutritionalFact().getProtein())
+                    .fat(menu.getMenuNutritionalFact().getFat())
+                    .saturatedFat(menu.getMenuNutritionalFact().getSaturatedFat())
+                    .transFat(menu.getMenuNutritionalFact().getTransFat())
+                    .cholesterol(menu.getMenuNutritionalFact().getCholesterol())
+                    .fiber(menu.getMenuNutritionalFact().getFiber())
+                    .folicAcid(menu.getMenuNutritionalFact().getFolicAcid())
+                    .iron(menu.getMenuNutritionalFact().getIron())
+                    .calcium(menu.getMenuNutritionalFact().getCalcium())
+                    .omega3FattyAcid(menu.getMenuNutritionalFact().getOmega3FattyAcid())
+                    .vitaminB6(menu.getMenuNutritionalFact().getVitaminB6())
+                    .vitaminB12(menu.getMenuNutritionalFact().getVitaminB12())
+                    .vitaminC(menu.getMenuNutritionalFact().getVitaminC())
+                    .vitaminD(menu.getMenuNutritionalFact().getVitaminD())
+                    .magnesium(menu.getMenuNutritionalFact().getMagnesium())
+                    .build()
+                ).build();
+
+        return response;
     }
 }
