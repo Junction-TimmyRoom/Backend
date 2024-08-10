@@ -41,4 +41,7 @@ public class MenuController {
     public ResponseEntity<MenuWithReviewsResponseDTO> getMenuWithReviews(@PathVariable("menuId") Long menuId){
         return ResponseEntity.ok(menuService.getMenuWithReviews(menuId));
     }
+
+    // 메뉴 아이디로 유저아이디, 리뷰아이디,리뷰 내용, 리뷰 생성날짜 반환하는 api
+
 }

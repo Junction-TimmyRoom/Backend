@@ -5,18 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import site.timmyroom.backend.dto.CategoryDTO;
-import site.timmyroom.backend.dto.MenuDTO;
-import site.timmyroom.backend.dto.MenuNutritionalFactDTO;
-import site.timmyroom.backend.dto.ReviewDTO;
+import site.timmyroom.backend.dto.*;
 import site.timmyroom.backend.dto.response.MenuWithCategoryResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithNutrionalFactResponseDTO;
 import site.timmyroom.backend.dto.response.MenuWithReviewsResponseDTO;
 import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.Menu;
+import site.timmyroom.backend.entity.Review;
+import site.timmyroom.backend.entity.User;
 import site.timmyroom.backend.excpetion.MenuNotFound;
 import site.timmyroom.backend.repository.MenuRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,21 +33,21 @@ public class MenuService {
 
     @Transactional
     public MenuWithCategoryResponseDTO getMenuInfo(Long menuId) {
-        Menu menuWithReviewsAndNutritionalFacts = menuRepository.findMenuWithReviewsAndNutritionalFactsAndCategory(menuId).orElseThrow(() -> new MenuNotFound());
-        log.debug("메뉴랑 카테고리 같이 : {}", menuWithReviewsAndNutritionalFacts.toString());
+        Menu menu = menuRepository.findMenuWithCategory(menuId).orElseThrow(() -> new MenuNotFound());
+        log.debug("메뉴랑 카테고리 같이 : {}", menu.toString());
 
         MenuWithCategoryResponseDTO menuWithCategoryResponseDTO = MenuWithCategoryResponseDTO.builder()
                 .menu(MenuDTO.builder()
-                        .id(menuWithReviewsAndNutritionalFacts.getId())
-                        .name(menuWithReviewsAndNutritionalFacts.getName())
-                        .contenet(menuWithReviewsAndNutritionalFacts.getContent())
-                        .recommendedServingSize(menuWithReviewsAndNutritionalFacts.getRecommendedServingSize())
-                        .caloriesPer100gServing(menuWithReviewsAndNutritionalFacts.getCaloriesPer100gServing())
+                        .id(menu.getId())
+                        .name(menu.getName())
+                        .contenet(menu.getContent())
+                        .recommendedServingSize(menu.getRecommendedServingSize())
+                        .caloriesPer100gServing(menu.getCaloriesPer100gServing())
                         .build()
                 )
                 .category(CategoryDTO.builder()
-                        .id(menuWithReviewsAndNutritionalFacts.getCategory().getId())
-                        .name(menuWithReviewsAndNutritionalFacts.getCategory().getName())
+                        .id(menu.getCategory().getId())
+                        .name(menu.getCategory().getName())
                         .build()
                 ).build();
 
@@ -96,25 +96,26 @@ public class MenuService {
     // 메뉴 아이디로 (해당 메뉴 아이디를 갖고 잇는 리뷰들의 요약본), 리뷰 내용, 리뷰 생성 날짜 반환하는 api
     @Transactional
     public MenuWithReviewsResponseDTO getMenuWithReviews(Long menuId) {
-        Menu menu = menuRepository.findMenuWithReviewsAndNutritionalFactsAndCategory(menuId).orElseThrow(() -> new MenuNotFound());
-        log.debug("메뉴랑 카테고리 같이 : {}", menu.toString());
+        List<Object[]> results = menuRepository.findReviewsAndUsersByMenuId(menuId);
 
         MenuWithReviewsResponseDTO response = MenuWithReviewsResponseDTO.builder()
-                .menu(MenuDTO.builder()
-                        .id(menu.getId())
-                        .name(menu.getName())
-                        .contenet(menu.getContent())
-                        .recommendedServingSize(menu.getRecommendedServingSize())
-                        .caloriesPer100gServing(menu.getCaloriesPer100gServing())
-                        .build()
-                )
+                .reviewSummary(null)
                 .reviews(
-                        menu.getReviews().stream().map(review -> ReviewDTO.builder()
-                                .id(review.getId())
-                                .content(review.getContent())
-                                .createdAt(review.getCreatedAt())
-                                .build()
-                        ).toList()
+                        results.stream().map(result -> {
+                            Review review = (Review) result[0];
+                            User user = (User) result[1];
+
+                            return ReviewDTO.builder()
+                                    .id(review.getId())
+                                    .content(review.getContent())
+                                    .createdAt(review.getCreatedAt())
+                                    .user(UserDTO.builder()
+                                            .email(user.getEmail())
+                                            .name(user.getName())
+                                            .build()
+                                    )
+                                    .build();
+                        }).toList()
                 ).build();
 
         return response;
