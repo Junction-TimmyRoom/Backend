@@ -1,5 +1,6 @@
 package site.timmyroom.backend.repository;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,7 +37,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @Query("SELECT m " +
             "FROM Menu m " +
             "WHERE LOWER(REPLACE(m.name, ' ', '')) LIKE %:keyword%")
-    Optional<Menu> searchMenuByKeywork(@Param("keyword") String keyword);
+    Optional<Menu> searchMenuByKeywork(@Param("keyword") String keyword, PageRequest pageable);
 
     // 메뉴명으로 원재료, 원재료특징 조회
     @Query("SELECT i FROM Menu m " +

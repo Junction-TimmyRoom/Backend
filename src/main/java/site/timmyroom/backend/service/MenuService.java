@@ -2,6 +2,7 @@ package site.timmyroom.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.timmyroom.backend.dto.*;
@@ -32,7 +33,7 @@ public class MenuService {
 
         List<Menu> filteredMenus = new ArrayList<>();
         for (String menuName : menuNames) {
-            Optional<Menu> menu = menuRepository.searchMenuByKeywork(menuName);
+            Optional<Menu> menu = menuRepository.searchMenuByKeywork(menuName, PageRequest.of(0, 1));
             menu.ifPresent(m -> filteredMenus.add(m));
         }
 
