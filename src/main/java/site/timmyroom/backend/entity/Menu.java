@@ -1,10 +1,10 @@
 package site.timmyroom.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.IngredientDTO;
 import site.timmyroom.backend.dto.MenuDTO;
 
 import java.util.List;
@@ -39,6 +39,8 @@ public class Menu {
     private Category category;
 
     public MenuDTO toDTO(){
+        List<IngredientDTO> ingredientDTOs = menuIngredients.stream().map(menuIngredient -> menuIngredient.getIngredient().toDTO()).toList();
+
         return MenuDTO.builder()
                 .id(id)
                 .name(name)
@@ -46,6 +48,10 @@ public class Menu {
                 .recommendedServingSize(recommendedServingSize)
                 .caloriesPer100gServing(caloriesPer100gServing)
                 .imgUrl(imgUrl)
+                .category(category.toDTO())
+                .reviews(reviews.stream().map(Review::toDTO).toList())
+                .menuNutritionalFact(menuNutritionalFact.toDTO())
+                .ingredients(ingredientDTOs)
                 .build();
     }
 }

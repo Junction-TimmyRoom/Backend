@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import site.timmyroom.backend.dto.UserDTO;
 import site.timmyroom.backend.entity.PregnancyNutritionByMonth;
 import site.timmyroom.backend.entity.User;
+import site.timmyroom.backend.excpetion.PregnancyNutritionByMonthNotFound;
 import site.timmyroom.backend.excpetion.UserNotFoundException;
 import site.timmyroom.backend.repository.PregnancyNutritionByMonthRepository;
 import site.timmyroom.backend.repository.UserRepository;
@@ -31,6 +32,6 @@ public class UserService {
     public PregnancyNutritionByMonth findRecommenedNutritionByMonth(String nickname) {
         User user = userRepository.findById(nickname).orElseThrow(() -> new UserNotFoundException());
 
-        return pregnancyNutritionByMonthRepository.findById(user.getPregnancyMonths()).orElseThrow(() -> new UserNotFoundException());
+        return pregnancyNutritionByMonthRepository.findById(user.getPregnancyMonths()).orElseThrow(() -> new PregnancyNutritionByMonthNotFound());
     }
 }

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.timmyroom.backend.dto.IngredientCharacteristicDTO;
 
+import java.util.List;
+
 @Entity
 @Getter
 @AllArgsConstructor
@@ -20,10 +22,8 @@ public class IngredientCharacteristic {
     private IngredientCharacteristicType type;
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    @JsonIgnore
-    private Ingredient ingredient;
+    @OneToMany(mappedBy = "ingredientCharacteristic")
+    private List<IngredientIngredientCharacteristic> ingredientIngredientCharacteristics;
 
     public IngredientCharacteristicDTO toDTO(){
         return IngredientCharacteristicDTO.builder()

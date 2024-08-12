@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.MenuNutritionalFactDTO;
 
 @Entity
 @Getter
@@ -58,4 +59,27 @@ public class MenuNutritionalFact {
     @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     private Menu menu;
+
+    public MenuNutritionalFactDTO toDTO(){
+        return MenuNutritionalFactDTO.builder()
+                .id(id)
+                .carbohydrates(carbohydrates)
+                .sugars(sugars)
+                .protein(protein)
+                .fat(fat)
+                .saturatedFat(saturatedFat)
+                .transFat(transFat)
+                .cholesterol(cholesterol)
+                .fiber(fiber)
+                .folicAcid(folicAcid)
+                .iron(iron)
+                .calcium(calcium)
+                .omega3FattyAcid(omega3FattyAcid)
+                .vitaminB6(vitaminB6)
+                .vitaminB12(vitaminB12)
+                .vitaminC(vitaminC)
+                .vitaminD(vitaminD)
+                .magnesium(magnesium)
+                .build();
+    }
 }

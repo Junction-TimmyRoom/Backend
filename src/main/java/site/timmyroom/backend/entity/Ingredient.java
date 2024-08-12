@@ -1,12 +1,11 @@
 package site.timmyroom.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.timmyroom.backend.dto.IngredientCharacteristicDTO;
 import site.timmyroom.backend.dto.IngredientDTO;
-import site.timmyroom.backend.dto.MenuDTO;
 
 import java.util.List;
 
@@ -27,14 +26,18 @@ public class Ingredient {
     private List<MenuIngredient> menuIngredients;
 
     @OneToMany(mappedBy = "ingredient")
-    private List<IngredientCharacteristic> ingredientCharacteristics;
+    private List<IngredientIngredientCharacteristic> ingredientIngredientCharacteristics;
 
     public IngredientDTO toDTO(){
+        List<IngredientCharacteristicDTO> characteristicDTOs = ingredientIngredientCharacteristics.stream()
+                .map(iic -> iic.getIngredientCharacteristic().toDTO())
+                .toList();
+
         return IngredientDTO.builder()
                 .id(id)
                 .name(name)
                 .imgUrl(imgUrl)
-                .ingredientCharacteristics(ingredientCharacteristics.stream().map(ingredientCharacteristic -> ingredientCharacteristic.toDTO()).toList())
+                .ingredientCharacteristics(characteristicDTOs)
                 .build();
     }
 }

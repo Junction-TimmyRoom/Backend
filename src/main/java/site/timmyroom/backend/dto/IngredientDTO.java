@@ -14,7 +14,8 @@ public class IngredientDTO {
 
     private Long id;
     private String name;
-    private MenuDTO menu;
     private String imgUrl;
+
+    private MenuDTO menu;
     private List<IngredientCharacteristicDTO> ingredientCharacteristics;
 }
