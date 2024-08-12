@@ -19,6 +19,6 @@ public class MenuIngredient {
     private Menu menu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "ingredient_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Ingredient ingredient;
 }
