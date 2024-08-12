@@ -6,6 +6,8 @@ import lombok.Data;
 import site.timmyroom.backend.entity.Ingredient;
 import site.timmyroom.backend.entity.IngredientCharacteristicType;
 
+import java.util.List;
+
 @Data
 @Builder
 public class IngredientCharacteristicDTO {
@@ -13,5 +15,6 @@ public class IngredientCharacteristicDTO {
     private Long id;
     private IngredientCharacteristicType type;
     private String content;
-//    private IngredientDTO ingredient;
+
+    private List<IngredientIngredientCharacteristicDTO> ingredientIngredientCharacteristics;
 }
