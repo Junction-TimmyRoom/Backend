@@ -28,4 +28,5 @@ public class MenuNutritionalFactDTO {
     private Integer vitaminC;
     private Integer vitaminD;
     private Integer magnesium;
+
 }
