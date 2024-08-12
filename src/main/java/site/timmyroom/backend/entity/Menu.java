@@ -23,24 +23,19 @@ public class Menu {
     private String content;
     private Integer recommendedServingSize;
     private Integer caloriesPer100gServing;
-
-    @OneToMany(mappedBy = "menu")
-    @JsonIgnore
-    private List<Review> reviews;
-
     private String imgUrl;
 
     @OneToMany(mappedBy = "menu")
-    @JsonIgnore
-    private List<Ingredient> ingredients;
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "menu")
+    private List<MenuIngredient> menuIngredients;
 
     @OneToOne(mappedBy = "menu")
-    @JsonIgnore
     private MenuNutritionalFact menuNutritionalFact;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    @JsonIgnore
     private Category category;
 
     public MenuDTO toDTO(){

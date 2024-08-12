@@ -23,13 +23,10 @@ public class Ingredient {
     private String name;
     private String imgUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    @JsonIgnore
-    private Menu menu;
+    @OneToMany(mappedBy = "ingredient")
+    private List<MenuIngredient> menuIngredients;
 
     @OneToMany(mappedBy = "ingredient")
-    @JsonIgnore
     private List<IngredientCharacteristic> ingredientCharacteristics;
 
     public IngredientDTO toDTO(){
@@ -37,7 +34,6 @@ public class Ingredient {
                 .id(id)
                 .name(name)
                 .imgUrl(imgUrl)
-                .menu(menu.toDTO())
                 .ingredientCharacteristics(ingredientCharacteristics.stream().map(ingredientCharacteristic -> ingredientCharacteristic.toDTO()).toList())
                 .build();
     }
